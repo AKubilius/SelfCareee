@@ -1,0 +1,72 @@
+import {
+    Box,
+    Container,
+    createTheme,
+    CssBaseline,
+    Grid,
+    ThemeProvider,
+  } from "@mui/material";
+  import { useEffect, useState } from "react";
+  import {api,authConfig} from "../Api/Api";
+  import Post from "../Banner/Post";
+  import Hairsalon from "./Hairsalon";
+import Button from "@mui/material/Button";
+  
+  const Recepies: React.FC = () => {
+    const [Recepies, setTravelOffers] = useState<any[]>([]);
+    const theme = createTheme();
+  
+    useEffect(() => {
+      const getTravelOffers = async () => {
+        const { data } = await api.get("/Hairsalon");
+        setTravelOffers(data);
+      };
+  
+      getTravelOffers();
+    }, []);
+   
+    const img = "https://img.freepik.com/free-vector/women-beauty-salon-flat-vector-illustration-hairdresser-doing-hairstyle-girl-while-she-looking-mirror-manicurist-sitting-painting-clients-nails-beauty-interior-concept_74855-23249.jpg?w=1380&t=st=1673586333~exp=1673586933~hmac=f5ee168bc8efec31917be58c7800781c04ac785d3fe48dc52cae412b2a46ddac"
+
+    return (
+        <>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container maxWidth={false}>
+              <main>
+                <Post
+                  image={img}
+                  imageText="meow"
+                  title="Kirpyklos"
+                />
+                <Box sx={{ flexGrow: 1 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={1}>
+                      
+                    </Grid>
+                    <Grid item xs={10}>
+                      <Grid container spacing={4}>
+                        {Recepies?.map((offer, index) => (
+                          <Hairsalon
+                            name={offer.name}
+                            adress={offer.adress}
+                            image={offer.imageUrl}
+                            workingHours={offer.workingHours}
+                            key={index}
+                            id={offer.id} />
+                        ))
+                        }
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </main>
+            </Container>
+          </ThemeProvider>
+          <Box component="span" sx={{ p: 2 }}>
+      
+    </Box>
+        </>
+      );
+    };
+    
+    export default Recepies;
